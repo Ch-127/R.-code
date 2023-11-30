@@ -62,10 +62,6 @@ visittime=chacha$visittime
 p <- ggplot(data = chacha, aes(x =visittime, y =MD,  group = ID,ylab = "MD",xlab = "Visit time in month",
                             scale=list(x=list(at=c(0,6,12,18,24,30,36,42)))))
 p + geom_line()
-boxplot(~,data = ,xlab = "follow-up time in month", ylab ="",horizontal=F)
-ggqqplot(chacha,'MD',facet.by='visittime',main="Normal Q-Q plot",xlab="Theoretical Quantiles",ylab="MD")
-a<-var(MDe~visittime)
-plot(a)
 #LOESS SMOTHING PLOT#
 library(sjPlot)
 library(gplots)
@@ -134,54 +130,12 @@ library(lattice)
 require(graphics)
 library(ConvergenceConcepts)
 
-#SELECTION OF COVARIANCE STRUCTURE#
-UN= lme(MD~residence+age+educ+HIV+comorbid+historyofSTI+stage+smoking+ocontraceptives+histologytype+Treatment+weight+visittime,
-            random = ~1 | ID,method = "ML",data=chacha, na.action=na.exclude)
-summary(UN)
-copsym=lme(MD~residence+comorbid+age+historyofSTI+HIV+ocontraceptives+stage+histologytype+educ+Treatment+weight+visittime,
-            random = ~1|ID,correlation = corCompSymm(form =~ 1 | ID ),
-            method = "ML",data=chacha,na.action=na.exclude)
-summary(copsym)
-ar= lme(MD~residence+comorbid+age+historyofSTI+HIV+ocontraceptives+stage+educ+histologytype+Treatment+weight+visittime,
-            random = ~ 1 | ID,correlation = corAR1(form =~ 1 | ID ),
-            method = "ML",data=chacha,na.action=na.exclude)        
-summary(ar)
+
 ###toepliz
 gt= lme(MD~residence+comorbid+age+historyofSTI+HIV+smoking+ocontraceptives+stage+educ+histologytype+Treatment+weight+visittime,
             random = ~ 1 | ID,correlation = corCAR1(form =~ 1 | ID ),
             method = "ML",data=chacha,na.action=na.exclude)        
 summary(gt)
-
-#selection of random effects#
-#random intercept model
-ri= lme(MD~1,
-        random = ~ 1 | ID,correlation = corAR1(form =~ 1 | ID ),
-        method = "ML",data=chacha)
-summary(ri)
-#random slope model
-ris= lme(MD~visittime,
-           random = ~visittime|ID,data=chacha, correlation =corAR1(form =~1|ID ),
-           method = "ML",control=lmeControl(maxIter=1000,msMaxIter=1000,niterEM=1000,opt='optim'))
-summary(ris)
-#random intercept and random slope model
-rs = lme(MD~residence+comorbid+age+historyofSTI+HIV+ocontraceptives+VIA+educ+pathologytype+Treatment+bweight+visittime,
-             random = ~visittime|ID,correlation = corAR1(form =~1 |ID ),
-             method = "ML", data=chacha,control=lmeControl(maxIter=1000,msMaxIter=1000,niterEM=1000,opt='optim'))
-summary(rs)
-#for model selection#
-full= lme(MD~residence+comorbid+age+historyofSTI+HIV+smoking+ocontraceptives+stage+educ+histologytype+Treatment+weight+visittime,
-         random = ~visittime | ID,
-         correlation = corAR1(form =~ 1 | ID ),
-     method = "ML",data=chacha,control=lmeControl(maxIter=1000,msMaxIter=1000,niterEM=1000,opt='optim'))
-summary(full)
-null= lme(MD~1,random = ~ 1 | ID,
-          correlation = corAR1(form =~ visittime | ID ),
- method = "ML",data=chacha)
-summary(null)
-null= lme(tumorlength~1+(1|ID),random = ~ 1 | ID,
- method = "ML",data=chacha)
-summary(null)
-
 #fitting univariable lmm#
 m=lme(MD~age+visittime ,data=chacha,random= ~ visittime| ID ,correlation = corAR1(form =~ 1 | ID ), method = "ML")
 summary(m)
