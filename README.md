@@ -38,10 +38,10 @@ plotResid <- function (, survival, col.loess = "black", ...) {
  abline(h = 0, lty = 3, col = "grey", lwd = 2)}
 visittime=chacha$visittime
 plot(lmm)
-qqnorm(MD)
-qqline(MD)
-hist(MD, prob = TRUE,xlab ="MD", main = "Histogram with normal curve for MD")
-x <- seq(min(MD), max(MD), length = 40)
+qqnorm()
+qqline()
+hist(MD, prob = TRUE,xlab ="", main = "")
+x <- seq(, , length = 40)
 f <- dnorm(x, mean = mean(MD), sd = sd(MD))
 lines(x,f, col = "red", lwd = 2)
 
@@ -54,30 +54,6 @@ residuals <- resid(lmm)
 summary(residuals)
 hist(residuals)
 plot(lmm)
-chacha$educ <- factor(chacha$educ,
-                     levels = c(0,1),
-                     labels = c("litrate", "illitrate"))
-chacha$histologytype <- factor(chacha$histologytype ,
-                     levels = c(0,1),
-                     labels = c("Adenocarcinoma", "Squamous cell carcinoma"))
-chacha$residence <- factor(chacha$residence,
-                        levels = c(0,1),
-                        labels = c("rural","urban"))
-chacha$comorbid <- factor(chacha$comorbid,
-                    levels = c(0,1),
-                    labels = c("No", "Yes"))
-chacha$HIV <- factor(chacha$HIV,
-                    levels = c(0,1),
-                    labels = c("No", "Yes"))
-chacha$Treatment <- factor(chacha$Treatment ,
-                    levels = c(0,1,2),
-                    labels = c("radiotherapy", "chemotherapy","surgery"))
-chacha$ocontraceptives<- factor(chacha$ocontraceptives,
-                    levels = c(0,1),
-                    labels = c("No", "Yes"))
-chacha$stage <- factor(chacha$stage,
-                    levels = c(0,1),
- labels = c("early", "late"))
 #to plot the individual profile plot.
 library(ggplot2)
 library(methods)
@@ -86,7 +62,7 @@ visittime=chacha$visittime
 p <- ggplot(data = chacha, aes(x =visittime, y =MD,  group = ID,ylab = "MD",xlab = "Visit time in month",
                             scale=list(x=list(at=c(0,6,12,18,24,30,36,42)))))
 p + geom_line()
-boxplot(MD~visittime,data = chacha,xlab = "follow-up time in month", ylab ="Tumor size by cm2",horizontal=F)
+boxplot(MD~visittime,data = chacha,xlab = "follow-up time in month", ylab ="MD",horizontal=F)
 ggqqplot(chacha,'MD',facet.by='visittime',main="Normal Q-Q plot",xlab="Theoretical Quantiles",ylab="MD")
 a<-var(MDe~visittime)
 plot(a)
@@ -94,7 +70,7 @@ plot(a)
 library(sjPlot)
 library(gplots)
 loess(formula =MD~visittime,data=chacha)
-scatter.smooth(MD~visittime,ylab = "Mean of MD",xlab = "Visit time in month",data=chacha)
+scatter.smooth(MD~visittime,ylab = "Mean of MD",xlab = "Visit time in month",data=)
 # FOR mean profile plot of each categorical var#
 
  ms=as.factor(chacha$ms)
@@ -498,7 +474,7 @@ hist(residuals)
 set.seed(1)
 fit=mjoint(formLongFixed=tumor~as.factor(comorbid)+as.factor(historyofSTI)+as.factor(HIV)+as.factor(Treatment)+as.factor(smoking)+as.factor(ocontraceptives)+as.factor(histologytype)+as.factor(stage)+weight+visittime,
      formLongRandom=~visittime|ID,
-      formSurv=Surv(time,status)~as.factor(comorbid)+as.factor(historyofSTI)+as.factor(HIV)+as.factor(smoking)+as.factor(ocontraceptives)+as.factor(histologytype)+as.factor(stage)+weight,
+     formSurv=Surv(time,status)~as.factor(comorbid)+as.factor(historyofSTI)+as.factor(HIV)+as.factor(smoking)+as.factor(ocontraceptives)+as.factor(histologytype)+as.factor(stage)+weight,
       data=chacha,
        timeVar="visittime",
        control = list(nMCscale = 2, burnin = 5))
