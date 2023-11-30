@@ -30,10 +30,9 @@ library(caret)
 install.packages("caret")
 library(caret)
 library(haven)
-chacha <-read_sav('C:/Users/Mini/Desktop/scaterplot data/my data.sav')
-attach(chacha)
+chacha <-read_sav()
 # function to produce scatteplots with superimposed smooth line
-plotResid <- function (chacha, survival, col.loess = "black", ...) {
+plotResid <- function (, survival, col.loess = "black", ...) {
  plot(chacha, survival, ...)
  lines(lowess(chacha, survival), col = col.loess, lwd = 2)
  abline(h = 0, lty = 3, col = "grey", lwd = 2)}
