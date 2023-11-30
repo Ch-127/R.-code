@@ -62,7 +62,7 @@ visittime=chacha$visittime
 p <- ggplot(data = chacha, aes(x =visittime, y =MD,  group = ID,ylab = "MD",xlab = "Visit time in month",
                             scale=list(x=list(at=c(0,6,12,18,24,30,36,42)))))
 p + geom_line()
-boxplot(MD~visittime,data = chacha,xlab = "follow-up time in month", ylab ="MD",horizontal=F)
+boxplot(~visittime,data = ,xlab = "follow-up time in month", ylab ="",horizontal=F)
 ggqqplot(chacha,'MD',facet.by='visittime',main="Normal Q-Q plot",xlab="Theoretical Quantiles",ylab="MD")
 a<-var(MDe~visittime)
 plot(a)
