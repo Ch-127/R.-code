@@ -1,4 +1,4 @@
-# R.-code
+# R.-code for joint model
 #LOESS SMOTHING PLOT#
 library(sjPlot)
 library(gplots)
